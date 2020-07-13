@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "814957733725",
+    "firebase_url": "https://more-friends-more-fun.firebaseio.com",
+    "project_id": "more-friends-more-fun",
+    "storage_bucket": "more-friends-more-fun.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814957733725:android:c204bc0d9123f597ed2ab4",
+        "android_client_info": {
+          "package_name": "com.atcampus.morefriendsmorefun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "814957733725-tbnd9hrlm1751akurfmfn8e7o47le3qm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atcampus.morefriendsmorefun",
+            "certificate_hash": "bfdf61dfd1a489455a060e94da400d4e00017117"
+          }
+        },
+        {
+          "client_id": "814957733725-j3ocqb0v69hvd8e77860lv7p535k333g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATXmpoRCASUca9cydbGEMY_H632J8zD8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "814957733725-j3ocqb0v69hvd8e77860lv7p535k333g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
