@@ -20,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atcampus.morefriendsmorefun.MainActivity;
+import com.atcampus.morefriendsmorefun.Activity.MainActivity;
 import com.atcampus.morefriendsmorefun.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,7 +41,7 @@ public class SignInFragment extends Fragment {
     }
 
     private FrameLayout parentFrameLayout;
-    private TextView regiBtn;
+    private TextView regiBtn,forgotBtn;
     private EditText emailText,passwordText;
     private Button loginBtn;
     private ProgressBar progressBar;
@@ -60,6 +60,7 @@ public class SignInFragment extends Fragment {
         passwordText = view.findViewById(R.id.passwordEditText);
         loginBtn = view.findViewById(R.id.button);
         progressBar = view.findViewById(R.id.progressBar);
+        forgotBtn = view.findViewById(R.id.forgotPasswordBtn);
 
         mAuth = FirebaseAuth.getInstance();
         return view;
@@ -81,6 +82,13 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setFragment(new SignUpFragment());
+            }
+        });
+
+        forgotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFragment(new ForgotPasswordFragment());
             }
         });
 

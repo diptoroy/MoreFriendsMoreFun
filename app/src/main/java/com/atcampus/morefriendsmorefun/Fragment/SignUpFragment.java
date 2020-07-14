@@ -8,8 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.text.Editable;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.atcampus.morefriendsmorefun.MainActivity;
+import com.atcampus.morefriendsmorefun.Activity.MainActivity;
 import com.atcampus.morefriendsmorefun.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,8 +28,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import static android.content.ContentValues.TAG;
 
 
 public class SignUpFragment extends Fragment {
