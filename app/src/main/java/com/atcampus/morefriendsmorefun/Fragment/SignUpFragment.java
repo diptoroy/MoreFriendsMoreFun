@@ -28,6 +28,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 
 public class SignUpFragment extends Fragment {
@@ -101,6 +106,22 @@ public class SignUpFragment extends Fragment {
                 if (task.isSuccessful()){
                     progressBar.setVisibility(View.INVISIBLE);
                     FirebaseUser user = mAuth.getCurrentUser();
+
+                    //get user email and uid
+                    String email = user.getEmail();
+                    String uid = user.getUid();
+                    //store user data
+                    HashMap<Object,String> hashMap = new HashMap<>();
+                    hashMap.put("email",email);
+                    hashMap.put("uid",uid);
+                    hashMap.put("name",""); //edit profile
+                    hashMap.put("phone",""); //edit profile
+                    hashMap.put("image",""); //edit profile
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("Users");
+                    reference.child(uid).setValue(hashMap);
+
                     Toast.makeText(getActivity(), "Authentication Success.",
                             Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), MainActivity.class));
