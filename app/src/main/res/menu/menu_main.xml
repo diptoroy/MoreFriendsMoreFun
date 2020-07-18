@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/signOut"
-        android:icon="@drawable/logout"
+        android:icon="@drawable/ic_baseline_power_settings_new_24"
         app:showAsAction="always"/>
 
 </menu>
