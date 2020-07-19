@@ -201,22 +201,22 @@ public class SignInFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()){
+                                //get user email and uid
+                                String email = user.getEmail();
+                                String uid = user.getUid();
+                                //store user data
+                                HashMap<Object,String> hashMap = new HashMap<>();
+                                hashMap.put("email",email);
+                                hashMap.put("uid",uid);
+                                hashMap.put("name",""); //edit profile
+                                hashMap.put("phone",""); //edit profile
+                                hashMap.put("image",""); //edit profile
 
-                            //get user email and uid
-                            String email = user.getEmail();
-                            String uid = user.getUid();
-                            //store user data
-                            HashMap<Object,String> hashMap = new HashMap<>();
-                            hashMap.put("email",email);
-                            hashMap.put("uid",uid);
-                            hashMap.put("name",""); //edit profile
-                            hashMap.put("phone",""); //edit profile
-                            hashMap.put("image",""); //edit profile
-
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference reference = database.getReference("Users");
-                            reference.child(uid).setValue(hashMap);
-
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference reference = database.getReference("Users");
+                                reference.child(uid).setValue(hashMap);
+                            }
                             Toast.makeText(getActivity(), "Authentication Success.",
                                     Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getActivity(), MainActivity.class));
