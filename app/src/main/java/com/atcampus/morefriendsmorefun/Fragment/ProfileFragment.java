@@ -1,5 +1,6 @@
 package com.atcampus.morefriendsmorefun.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.atcampus.morefriendsmorefun.Activity.MainActivity;
+import com.atcampus.morefriendsmorefun.Activity.RegisterActivity;
 import com.atcampus.morefriendsmorefun.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +26,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -30,13 +35,13 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
-    FirebaseDatabase mDatabase;
-    DatabaseReference mReference;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     TextView userName,userEmail,userPhone;
-    ImageView userImage;
+    CircleImageView userImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,17 +49,16 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance();
-        mReference = mDatabase.getReference("Users");
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
 
         userImage = view.findViewById(R.id.profile_image);
         userName = view.findViewById(R.id.profile_name);
         userEmail = view.findViewById(R.id.profile_email);
         userPhone = view.findViewById(R.id.profile_phone);
-
-        Query query = mReference.child("email").equalTo(mUser.getEmail());
+        Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -82,11 +86,30 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
         return view;
     }
+
+//    private void checkUserStatus(){
+//        FirebaseUser user = mAuth.getCurrentUser();
+//        if (user != null){
+//            //code
+//            userName.setText(user.getEmail());
+//        }else {
+//
+//        }
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        checkUserStatus();
+//        super.onStart();
+//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
     }
 }
