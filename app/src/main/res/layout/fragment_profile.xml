@@ -18,6 +18,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -26,21 +30,22 @@
         android:id="@+id/profile_image"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="148dp"
         android:src="@drawable/profile"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <TextView
         android:id="@+id/profile_name"
+        android:text="Jhon Doe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:textSize="18sp"
+        android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/profile_image"
         app:layout_constraintStart_toStartOf="@+id/profile_image"
@@ -48,25 +53,103 @@
 
     <TextView
         android:id="@+id/profile_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
         android:text="jhondoe@email.com"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/profile_phone"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="12dp"
         android:text="956738546"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/profile_email" />
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/Bio_text"
+        android:layout_width="242dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="3dp"
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="@+id/profile_name"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="@+id/profile_name"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Email :"
+        android:textSize="16sp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="14dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorBlack"
+        android:text="Phone :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="177dp"
+        android:text="Personal Information"
+        android:textColor="@color/colorBlack"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Bio_text" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/edit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/colorWhite"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:src="@drawable/ic_baseline_edit_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
