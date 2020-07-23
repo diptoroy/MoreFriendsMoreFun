@@ -11,7 +11,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -26,8 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atcampus.morefriendsmorefun.Activity.MainActivity;
-import com.atcampus.morefriendsmorefun.Activity.RegisterActivity;
 import com.atcampus.morefriendsmorefun.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +44,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -71,6 +69,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView userImage;
     ImageView coverImage;
     FloatingActionButton editBtn;
+
 
     //permission
     public static final int CAMERA_REQUEST_CODE = 100;
@@ -114,6 +113,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()){
+
                     String image = ""+ ds.child("image").getValue();
                     String name = ""+ ds.child("name").getValue();
                     String email = ""+ ds.child("email").getValue();
