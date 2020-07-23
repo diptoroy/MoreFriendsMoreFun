@@ -64,13 +64,13 @@ public class FriendsFragment extends Fragment {
                 friendsModelList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()){
                     FriendsModel fModel = ds.getValue(FriendsModel.class);
-                    if (!fModel.getProfileUid().equals(mUser.getUid())){
+                    if (fModel.getUid() != null && !fModel.getUid().equals(mUser.getUid())){
                         friendsModelList.add(fModel);
                     }
 
                     friendsAdapter = new FriendsAdapter(friendsModelList);
                     friendsRecyclerView.setAdapter(friendsAdapter);
-
+                    friendsAdapter.notifyDataSetChanged();
                 }
 
             }

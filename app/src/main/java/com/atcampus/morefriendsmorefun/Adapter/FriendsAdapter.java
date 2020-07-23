@@ -35,9 +35,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
 
-        String pEmail = friendsModels.get(position).getProfileEmail();
-        String pName = friendsModels.get(position).getProfileName();
-        String pImage = friendsModels.get(position).getProfileImage();
+        String pEmail = friendsModels.get(position).getEmail();
+        String pName = friendsModels.get(position).getName();
+        String pImage = friendsModels.get(position).getImage();
 
         holder.email.setText(pEmail);
         holder.name.setText(pName);
@@ -63,9 +63,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
-            email = itemView.findViewById(R.id.profile_email);
-            name = itemView.findViewById(R.id.profile_name);
-            image = itemView.findViewById(R.id.profile_image);
+            email = itemView.findViewById(R.id.profile_emaile);
+            name = itemView.findViewById(R.id.profile_namee);
+            image = itemView.findViewById(R.id.profile_imagee);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

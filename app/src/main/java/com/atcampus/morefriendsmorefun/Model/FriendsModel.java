@@ -2,80 +2,83 @@ package com.atcampus.morefriendsmorefun.Model;
 
 public class FriendsModel {
 
-    String profileImage,profileName,profileEmail,profileCover,profilePhone,profileBio,profileSearch,profileUid;
+    String image,name,email,cover,phone,bio,search,uid;
 
-    public FriendsModel(String profileImage, String profileName, String profileEmail, String profileCover, String profilePhone, String profileBio, String profileSearch, String profileUid) {
-        this.profileImage = profileImage;
-        this.profileName = profileName;
-        this.profileEmail = profileEmail;
-        this.profileCover = profileCover;
-        this.profilePhone = profilePhone;
-        this.profileBio = profileBio;
-        this.profileSearch = profileSearch;
-        this.profileUid = profileUid;
+    public FriendsModel() {
     }
 
-    public String getProfileImage() {
-        return profileImage;
+    public FriendsModel(String image, String name, String email, String cover, String phone, String bio, String search, String uid) {
+        this.image = image;
+        this.name = name;
+        this.email = email;
+        this.cover = cover;
+        this.phone = phone;
+        this.bio = bio;
+        this.search = search;
+        this.uid = uid;
     }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+    public String getImage() {
+        return image;
     }
 
-    public String getProfileName() {
-        return profileName;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setProfileName(String profileName) {
-        this.profileName = profileName;
+    public String getName() {
+        return name;
     }
 
-    public String getProfileEmail() {
-        return profileEmail;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setProfileEmail(String profileEmail) {
-        this.profileEmail = profileEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public String getProfileCover() {
-        return profileCover;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setProfileCover(String profileCover) {
-        this.profileCover = profileCover;
+    public String getCover() {
+        return cover;
     }
 
-    public String getProfilePhone() {
-        return profilePhone;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
-    public void setProfilePhone(String profilePhone) {
-        this.profilePhone = profilePhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getProfileBio() {
-        return profileBio;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setProfileBio(String profileBio) {
-        this.profileBio = profileBio;
+    public String getBio() {
+        return bio;
     }
 
-    public String getProfileSearch() {
-        return profileSearch;
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
-    public void setProfileSearch(String profileSearch) {
-        this.profileSearch = profileSearch;
+    public String getSearch() {
+        return search;
     }
 
-    public String getProfileUid() {
-        return profileUid;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
-    public void setProfileUid(String profileUid) {
-        this.profileUid = profileUid;
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }
