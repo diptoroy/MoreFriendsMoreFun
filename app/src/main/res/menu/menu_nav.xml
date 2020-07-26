@@ -16,9 +16,17 @@
         android:title="Notification"
         android:icon="@drawable/ic_baseline_notifications_24"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/nav_chat"
+        android:title="Chat"
+        android:icon="@drawable/ic_baseline_chat_24"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/nav_profile"
         android:title="Profile"
         android:icon="@drawable/ic_baseline_settings_24"
         app:showAsAction="ifRoom"/>
+
 </menu>

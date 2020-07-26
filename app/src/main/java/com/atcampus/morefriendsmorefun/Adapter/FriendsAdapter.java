@@ -1,5 +1,6 @@
 package com.atcampus.morefriendsmorefun.Adapter;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.morefriendsmorefun.Activity.ChatActivity;
 import com.atcampus.morefriendsmorefun.Model.FriendsModel;
 import com.atcampus.morefriendsmorefun.R;
 import com.squareup.picasso.Picasso;
@@ -33,11 +35,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FriendsAdapter.ViewHolder holder, int position) {
 
         String pEmail = friendsModels.get(position).getEmail();
         String pName = friendsModels.get(position).getName();
         String pImage = friendsModels.get(position).getImage();
+        final String pUid = friendsModels.get(position).getUid();
 
         holder.email.setText(pEmail);
         holder.name.setText(pName);
@@ -46,7 +49,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         }catch (Exception e){
 
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(itemView.getContext(),""+email,Toast.LENGTH_SHORT).show();
+                Intent chatIntent = new Intent(holder.itemView.getContext(), ChatActivity.class);
+                chatIntent.putExtra("pUid",pUid);
+                holder.itemView.getContext().startActivity(chatIntent);
 
+            }
+        });
 
     }
 
@@ -67,13 +79,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             name = itemView.findViewById(R.id.profile_namee);
             image = itemView.findViewById(R.id.profile_imagee);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(),""+email,Toast.LENGTH_SHORT).show();
 
-                }
-            });
         }
 
     }

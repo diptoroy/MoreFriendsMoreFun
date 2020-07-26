@@ -6,15 +6,14 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.atcampus.morefriendsmorefun.Fragment.ChatFragment;
 import com.atcampus.morefriendsmorefun.Fragment.FriendsFragment;
 import com.atcampus.morefriendsmorefun.Fragment.HomeFragment;
 import com.atcampus.morefriendsmorefun.Fragment.NotificationFragment;
 import com.atcampus.morefriendsmorefun.Fragment.ProfileFragment;
 import com.atcampus.morefriendsmorefun.R;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,22 +47,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.signOut){
-            mFirebaseAuth.signOut();
-            checkUserStatus();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main,menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//
+//        int id = item.getItemId();
+//        if (id == R.id.signOut){
+//            mFirebaseAuth.signOut();
+//            checkUserStatus();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onStart() {
@@ -89,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_profile:
                             selectedFragment = new ProfileFragment();
+                            break;
+                        case R.id.nav_chat:
+                            selectedFragment = new ChatFragment();
                             break;
                     }
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, selectedFragment).commit();
