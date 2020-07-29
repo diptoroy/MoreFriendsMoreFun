@@ -108,11 +108,11 @@ public class ChatActivity extends AppCompatActivity {
         pSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String chatMsg = pChatText.getText().toString().trim();
-                if (TextUtils.isEmpty(chatMsg)) {
+                String chatMessage = pChatText.getText().toString().trim();
+                if (TextUtils.isEmpty(chatMessage)) {
                     Toast.makeText(ChatActivity.this, "Message can't be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    sendChat(chatMsg);
+                    sendChat(chatMessage);
                 }
             }
         });
@@ -171,16 +171,16 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void sendChat(String chatMsg) {
+    private void sendChat(String chatMessage) {
         DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
-        String timeStamp = String.valueOf(System.currentTimeMillis());
+        String time = String.valueOf(System.currentTimeMillis());
 
         HashMap<String,Object> chat = new HashMap<>();
         chat.put("sender",myUid);
         chat.put("receiver",pUid);
-        chat.put("message",chatMsg);
-        chat.put("timeStamp",timeStamp);
+        chat.put("message",chatMessage);
+        chat.put("timeStamp",time);
         chat.put("isSeen",false);
         mDatabaseReference.child("chats").push().setValue(chat);
 

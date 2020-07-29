@@ -1,24 +1,29 @@
 package com.atcampus.morefriendsmorefun.Model;
 
+import com.google.firebase.database.PropertyName;
+
 public class ChatModel {
 
-    private String chatMessage,receiver,sender,time;
+    private String message,receiver,sender,timeStamp;
     private boolean isSeen;
 
-    public ChatModel(String chatMessage, String receiver, String sender, String time, boolean isSeen) {
-        this.chatMessage = chatMessage;
+    public ChatModel() {
+    }
+
+    public ChatModel(String message, String receiver, String sender, String timeStamp, boolean isSeen) {
+        this.message = message;
         this.receiver = receiver;
         this.sender = sender;
-        this.time = time;
+        this.timeStamp = timeStamp;
         this.isSeen = isSeen;
     }
 
-    public String getChatMessage() {
-        return chatMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setChatMessage(String chatMessage) {
-        this.chatMessage = chatMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getReceiver() {
@@ -37,18 +42,20 @@ public class ChatModel {
         this.sender = sender;
     }
 
-    public String getTime() {
-        return time;
+    public String getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
+    @PropertyName("isSeen")
     public boolean isSeen() {
         return isSeen;
     }
 
+    @PropertyName("isSeen")
     public void setSeen(boolean seen) {
         isSeen = seen;
     }

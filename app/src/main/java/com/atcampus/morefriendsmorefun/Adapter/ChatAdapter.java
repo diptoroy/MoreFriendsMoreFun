@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -48,20 +49,29 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.ViewHolder holder, int position) {
 
-        String chatMsg = chatModels.get(position).getChatMessage();
-        String chatTime = chatModels.get(position).getTime();
+        String chatMsg = chatModels.get(position).getMessage();
+        String chatTime = chatModels.get(position).getTimeStamp();
 
         //convert and format time
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(Long.parseLong(chatTime));
-        String dateFormat = DateFormat.format("dd/MM/yy hh:mm aa",calendar).toString();
+        String formattedDate = null;
+        try {
+            Long timeInMilis = Long.parseLong(chatTime);
+            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+            calendar.setTimeInMillis(timeInMilis);
+//        String dateFormat = DateFormat.format("dd/MM/yy hh:mm aa",calendar).toString();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+            formattedDate = simpleDateFormat.format(calendar.getTime());
+        }catch (Exception e){
+
+        }
+
 
         holder.chatText.setText(chatMsg);
-        holder.timeText.setText(chatTime);
+        holder.timeText.setText(formattedDate);
         try{
             Picasso.get().load(image).into(holder.imageView);
         }catch (Exception e){
-            Picasso.get().load(image).into(holder.imageView);
+//            Picasso.get().load(image).into(holder.imageView);
         }
 
         //seen or delivery

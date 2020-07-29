@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="28/09/2020 4.00PM"
+        android:text="28/09/2020 4:00 PM"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/reciever_text"
