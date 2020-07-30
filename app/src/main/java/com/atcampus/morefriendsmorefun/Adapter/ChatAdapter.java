@@ -58,7 +58,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             Long timeInMilis = Long.parseLong(chatTime);
             Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
             calendar.setTimeInMillis(timeInMilis);
-//        String dateFormat = DateFormat.format("dd/MM/yy hh:mm aa",calendar).toString();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
             formattedDate = simpleDateFormat.format(calendar.getTime());
         }catch (Exception e){

@@ -31,9 +31,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -89,6 +92,23 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     pImg = "" + ds.child("image").getValue();
                     String name = "" + ds.child("name").getValue();
+                    String onlineStatus = ""+ ds.child("onlineStatus").getValue();
+
+                    if (onlineStatus.equals("online")){
+                        pStatus.setText(onlineStatus);
+                    }else{
+                        String formattedDate = null;
+                        try {
+                            Long timeInMilis = Long.parseLong(onlineStatus);
+                            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                            calendar.setTimeInMillis(timeInMilis);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+                            formattedDate = simpleDateFormat.format(calendar.getTime());
+                            pStatus.setText("Last seen at "+formattedDate);
+                        }catch (Exception e){
+
+                        }
+                    }
 
                     pName.setText(name);
                     try {
@@ -144,7 +164,6 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-
     private void readChat() {
         chatModelList = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("chats");
@@ -187,16 +206,32 @@ public class ChatActivity extends AppCompatActivity {
         pChatText.setText("");
     }
 
+    private void checkOnlineStatus(String status){
+        DatabaseReference checkRef = FirebaseDatabase.getInstance("Users").getReference(myUid);
+        HashMap<String,Object> checkMap = new HashMap<>();
+        checkMap.put("onlineStatus",status);
+        checkRef.updateChildren(checkMap);
+    }
+
     @Override
     protected void onStart() {
         checkUserStatus();
+        checkOnlineStatus("online");
         super.onStart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        String time = String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(time);
         userReference.removeEventListener(seenEventListener);
+    }
+
+    @Override
+    protected void onResume() {
+        checkOnlineStatus("online");
+        super.onResume();
     }
 
     private void checkUserStatus() {

@@ -119,6 +119,7 @@ public class SignUpFragment extends Fragment {
                     hashMap.put("image",""); //edit profile
                     hashMap.put("cover","");//edit profile
                     hashMap.put("bio","");//edit profile
+                    hashMap.put("onlineStatus","online"); //edit profile
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference reference = database.getReference("Users");
