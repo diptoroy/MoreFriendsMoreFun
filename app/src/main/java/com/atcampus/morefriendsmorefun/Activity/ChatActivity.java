@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,23 +94,29 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     pImg = "" + ds.child("image").getValue();
                     String name = "" + ds.child("name").getValue();
-                    String onlineStatus = ""+ ds.child("onlineStatus").getValue();
+                    String typingStatus = ""+ ds.child("typingTo").getValue();
 
-                    if (onlineStatus.equals("online")){
-                        pStatus.setText(onlineStatus);
-                    }else{
-                        String formattedDate = null;
-                        try {
-                            Long timeInMilis = Long.parseLong(onlineStatus);
-                            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-                            calendar.setTimeInMillis(timeInMilis);
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-                            formattedDate = simpleDateFormat.format(calendar.getTime());
-                            pStatus.setText("Last seen at "+formattedDate);
-                        }catch (Exception e){
+                    if (typingStatus.equals(myUid)){
+                        pStatus.setText("typing...");
+                    }else {
+                        String onlineStatus = ""+ ds.child("onlineStatus").getValue();
+                        if (onlineStatus.equals("online")){
+                            pStatus.setText(onlineStatus);
+                        }else{
+                            String formattedDate = null;
+                            try {
+                                Long timeInMilis = Long.parseLong(onlineStatus);
+                                Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                                calendar.setTimeInMillis(timeInMilis);
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+                                formattedDate = simpleDateFormat.format(calendar.getTime());
+                                pStatus.setText("Last seen at "+formattedDate);
+                            }catch (Exception e){
 
+                            }
                         }
                     }
+
 
                     pName.setText(name);
                     try {
@@ -134,6 +142,27 @@ public class ChatActivity extends AppCompatActivity {
                 } else {
                     sendChat(chatMessage);
                 }
+            }
+        });
+
+        pChatText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() == 0){
+                    checkTypingStatus("noOne");
+                }else{
+                    checkTypingStatus(pUid);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -207,9 +236,16 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void checkOnlineStatus(String status){
-        DatabaseReference checkRef = FirebaseDatabase.getInstance("Users").getReference(myUid);
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
         HashMap<String,Object> checkMap = new HashMap<>();
         checkMap.put("onlineStatus",status);
+        checkRef.updateChildren(checkMap);
+    }
+
+    private void checkTypingStatus(String typing){
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
+        HashMap<String,Object> checkMap = new HashMap<>();
+        checkMap.put("typingTo",typing);
         checkRef.updateChildren(checkMap);
     }
 
@@ -225,6 +261,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onPause();
         String time = String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(time);
+        checkTypingStatus("noOne");
         userReference.removeEventListener(seenEventListener);
     }
 

@@ -214,7 +214,8 @@ public class SignInFragment extends Fragment {
                                 hashMap.put("image",""); //edit profile
                                 hashMap.put("cover","");//edit profile
                                 hashMap.put("bio","");//edit profile
-                                hashMap.put("onlineStatus","online"); //edit profile
+                                hashMap.put("onlineStatus","online");
+                                hashMap.put("typingTo","noOne");
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference = database.getReference("Users");
