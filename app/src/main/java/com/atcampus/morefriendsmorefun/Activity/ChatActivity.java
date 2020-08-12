@@ -206,7 +206,7 @@ public class ChatActivity extends AppCompatActivity {
                             chat.getReceiver().equals(pUid) && chat.getSender().equals(myUid)){
                         chatModelList.add(chat);
                     }
-                    chatAdapter = new ChatAdapter(chatModelList,pImg);
+                    chatAdapter = new ChatAdapter(chatModelList,pImg,ChatActivity.this);
                     chatAdapter.notifyDataSetChanged();
                     chatRecyclerView.setAdapter(chatAdapter);
                 }

@@ -1,23 +1,36 @@
 package com.atcampus.morefriendsmorefun.Adapter;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atcampus.morefriendsmorefun.Activity.ChatActivity;
 import com.atcampus.morefriendsmorefun.Model.ChatModel;
 import com.atcampus.morefriendsmorefun.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,10 +41,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private List<ChatModel> chatModels;
     String image;
     FirebaseUser mFirebaseUser;
+    private Context mCtx;
 
-    public ChatAdapter(List<ChatModel> chatModels, String image) {
+    public ChatAdapter(List<ChatModel> chatModels, String image,Context mCtx) {
         this.chatModels = chatModels;
         this.image = image;
+        this.mCtx = mCtx;
     }
 
     @NonNull
@@ -47,7 +62,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ChatAdapter.ViewHolder holder, final int position) {
 
         String chatMsg = chatModels.get(position).getMessage();
         String chatTime = chatModels.get(position).getTimeStamp();
@@ -84,6 +99,60 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.isSeenText.setVisibility(View.GONE);
         }
 
+        holder.chatLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
+                dialog.setTitle("Delete Chat");
+                dialog.setMessage("Are you sure to delete this message?");
+                dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Toast.makeText(mCtx,"Message deleted",Toast.LENGTH_SHORT).show();
+                        deleteMessage(position);
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.create().show();
+            }
+        });
+
+    }
+
+    private void deleteMessage(int i) {
+        final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        String chatTimeStamp = chatModels.get(i).getTimeStamp();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("chats");
+        Query query = databaseReference.orderByChild("timeStamp").equalTo(chatTimeStamp);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    if (ds.child("sender").getValue().equals(myUid)){
+                        ds.getRef().removeValue();
+//                        HashMap<String,Object> hashMap = new HashMap<>();
+//                        hashMap.put("message","This message was delete...");
+//                        ds.getRef().updateChildren(hashMap);
+                        Toast.makeText(mCtx,"Message deleted",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(mCtx,"You can only delete your message.",Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -105,6 +174,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
         private ImageView imageView;
         private TextView chatText, timeText, isSeenText;
+        private ConstraintLayout chatLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +183,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             chatText = itemView.findViewById(R.id.reciever_text);
             timeText = itemView.findViewById(R.id.reciever_time);
             isSeenText = itemView.findViewById(R.id.reciever_seen);
+            chatLayout = itemView.findViewById(R.id.chatLayout);
 
         }
     }
