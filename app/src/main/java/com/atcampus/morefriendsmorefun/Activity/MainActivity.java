@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -13,16 +14,22 @@ import com.atcampus.morefriendsmorefun.Fragment.FriendsFragment;
 import com.atcampus.morefriendsmorefun.Fragment.HomeFragment;
 import com.atcampus.morefriendsmorefun.Fragment.NotificationFragment;
 import com.atcampus.morefriendsmorefun.Fragment.ProfileFragment;
+import com.atcampus.morefriendsmorefun.Model.TokenModel;
 import com.atcampus.morefriendsmorefun.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
     private FirebaseAuth mFirebaseAuth;
+
+    String mUId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +40,33 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView2);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
     }
 
+    @Override
+    protected void onResume() {
+        checkUserStatus();
+        super.onResume();
+    }
 
+    public void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Token");
+        TokenModel mToken = new TokenModel(token);
+        reference.child(mUId).setValue(mToken);
+
+    }
 
     private void checkUserStatus(){
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user != null){
             //code
+            mUId = user.getUid();
+
+            SharedPreferences sharedPreferences = getSharedPreferences("SP_USER",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("Current_UserID",mUId);
+            editor.apply();
         }else {
             startActivity(new Intent(MainActivity.this, RegisterActivity.class));
             finish();
