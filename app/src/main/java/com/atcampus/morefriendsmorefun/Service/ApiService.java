@@ -2,6 +2,7 @@ package com.atcampus.morefriendsmorefun.Service;
 
 import com.atcampus.morefriendsmorefun.Model.SenderModel;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -16,5 +17,5 @@ public interface ApiService {
     })
 
     @POST("fcm/send")
-    Call<Response> sendNotification(@Body SenderModel body);
+    Call<ResponseBody>sendNotification(@Body SenderModel body);
 }

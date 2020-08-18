@@ -22,7 +22,12 @@ import android.widget.Toast;
 
 import com.atcampus.morefriendsmorefun.Adapter.ChatAdapter;
 import com.atcampus.morefriendsmorefun.Model.ChatModel;
+import com.atcampus.morefriendsmorefun.Model.NotificationDataModel;
+import com.atcampus.morefriendsmorefun.Model.SenderModel;
+import com.atcampus.morefriendsmorefun.Model.TokenModel;
 import com.atcampus.morefriendsmorefun.R;
+import com.atcampus.morefriendsmorefun.Service.ApiService;
+import com.atcampus.morefriendsmorefun.Service.Client;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +46,10 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -59,8 +68,10 @@ public class ChatActivity extends AppCompatActivity {
     ValueEventListener seenEventListener;
     DatabaseReference userReference;
 
-
     String pUid,pImg, myUid;
+
+    ApiService apiService;
+    boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +90,8 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setHasFixedSize(true);
         chatRecyclerView.setLayoutManager(linearLayoutManager);
+
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(ApiService.class);
 
         Intent intent = getIntent();
         pUid = intent.getStringExtra("pUid");
@@ -136,12 +149,14 @@ public class ChatActivity extends AppCompatActivity {
         pSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notify = true;
                 String chatMessage = pChatText.getText().toString().trim();
                 if (TextUtils.isEmpty(chatMessage)) {
                     Toast.makeText(ChatActivity.this, "Message can't be empty", Toast.LENGTH_SHORT).show();
                 } else {
                     sendChat(chatMessage);
                 }
+                pChatText.setText("");
             }
         });
 
@@ -219,12 +234,12 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void sendChat(String chatMessage) {
+    private void sendChat(final String chatMessage) {
         DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         String time = String.valueOf(System.currentTimeMillis());
 
-        HashMap<String,Object> chat = new HashMap<>();
+        final HashMap<String,Object> chat = new HashMap<>();
         chat.put("sender",myUid);
         chat.put("receiver",pUid);
         chat.put("message",chatMessage);
@@ -232,7 +247,58 @@ public class ChatActivity extends AppCompatActivity {
         chat.put("isSeen",false);
         mDatabaseReference.child("chats").push().setValue(chat);
 
-        pChatText.setText("");
+
+
+        String msg = chatMessage;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                NotificationDataModel user = snapshot.getValue(NotificationDataModel.class);
+                if (notify){
+                    sentNotification(pUid,user.getUser(),chatMessage);
+                }
+                notify = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void sentNotification(final String pUid, final String user, final String chatMessage) {
+        DatabaseReference allToken = FirebaseDatabase.getInstance().getReference("Token");
+        Query query = allToken.orderByKey().equalTo(pUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()){
+                    TokenModel tokenModel = data.getValue(TokenModel.class);
+                    NotificationDataModel nData = new NotificationDataModel(myUid,user+":"+chatMessage,"New Message",pUid,R.drawable.ic_baseline_email_24);
+
+                    SenderModel senderModel = new SenderModel(nData,tokenModel.getToken());
+                    apiService.sendNotification(senderModel)
+                            .enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                    Toast.makeText(ChatActivity.this,""+response.message(),Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void checkOnlineStatus(String status){

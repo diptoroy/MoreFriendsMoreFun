@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView2);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
+        checkUserStatus();
         updateToken(FirebaseInstanceId.getInstance().getToken());
     }
 
